@@ -1,6 +1,6 @@
 #include<iostream>
 #include <fstream>
-#include <stdlib.h>
+
 #include<string.h>
 using namespace std;
 class Nodo
@@ -25,7 +25,13 @@ class Nodo
 			sig=NULL;	
 		}
 		Nodo(char *Ma,char *Mo,char *Ca,char *Tr,char *Co,int An,int Ci)
-		{	marca=Ma;
+		{
+			//voy a hacer el primero, tu haces los demás!!
+			marca= new char [strlen(Ma)+1];
+			strcpy(marca,Ma);
+			//asi debes de trabajarlos
+		 
+		 
 			modelo=Mo;
 			categoria=Ca;
 			trasmision=Tr;
@@ -94,6 +100,8 @@ class LSE
 		void CrearA(char*);
 		void Editar();
 };
+
+
 Nodo* LSE::ObtenerNodo(int x)
 {	Nodo *aux=Inicio;
 	int i=1;
@@ -214,42 +222,40 @@ void LSE::Borrar()
 }
 Nodo* LSE::Buscar(char *m,int op)
 {  	Nodo *Aux=Inicio;
-	char *x;
-	x=new char[strlen(m)+1];
-	strcpy(x,m);
+
 	int i=1,j=0;
    	if(Inicio)
    	{	switch(op)
    		{	case 1:	while (Aux!=NULL)
-   					{	if(strcmp(x,Aux->Obma())==0)
+   					{	if(strcmp(m,Aux->Obma())==0)
    						{	cout<<"#"<<i<<": "; Aux->Imprimir(); i++; j++;
 		   				}
 		   				else i++;
    						Aux=Aux->Obtienesig();
    					}	break;
    			case 2: while (Aux!=NULL)
-   					{	if(strcmp(x,Aux->Obmo())==0)
+   					{	if(strcmp(m,Aux->Obmo())==0)
    						{	cout<<"#"<<i<<": "; Aux->Imprimir(); i++; j++;
 		   				}
 		   				else i++;
 						Aux=Aux->Obtienesig();
    					}	break;
    			case 4: while (Aux!=NULL)
-   					{	if(strcmp(x,Aux->Obca())==0)
+   					{	if(strcmp(m,Aux->Obca())==0)
    						{	cout<<"#"<<i<<": "; Aux->Imprimir(); i++; j++;
 		   				}
 		   				else i++;
    						Aux=Aux->Obtienesig();
    					}	break;
    			case 6: while (Aux!=NULL)
-   					{	if(strcmp(x,Aux->Obco())==0)
+   					{	if(strcmp(m,Aux->Obco())==0)
    						{	cout<<"#"<<i<<": "; Aux->Imprimir(); i++; j++;
 		   				}
 		   				else i++;
    						Aux=Aux->Obtienesig();
    					}	break;
    			case 7: while (Aux!=NULL)
-   					{	if(strcmp(x,Aux->Obtr())==0)
+   					{	if(strcmp(m,Aux->Obtr())==0)
    						{	cout<<"#"<<i<<": "; Aux->Imprimir(); i++; j++;
 		   				}
 		   				else i++;
@@ -320,13 +326,11 @@ Nodo* LSE::BuscarG()
 }
 void LSE::CrearA(char *m)
 {	ofstream Mar; 
-	char *x;
-	x=new char[strlen(m)+1];
-	strcpy(x,m);
+	
 	Nodo *Aux=Inicio;
 	Mar.open("E:/Carrosmarca.txt");
 	while(Aux!=NULL)
-  	{	if(strcmp(x,Aux->Obma())==0)
+  	{	if(strcmp(m,Aux->Obma())==0)
 	 	Mar<<Aux->Obma()<<"\t"<<Aux->Obmo()<<"\t"<<Aux->Oban()<<"\t"<<Aux->Obca()<<"\t"<<Aux->Obci()<<"\t"<<Aux->Obtr()<<"\t"<<Aux->Obco()<<endl;
 	 	Aux=Aux->Obtienesig();
 	}
@@ -336,7 +340,7 @@ void LSE::CrearA(int x,int op)
 {	ofstream An,Cilin; 
 	if(op==1)
 	{	Nodo *Aux=Inicio;
-		An.open("E:/Carrosa�o.txt");
+		An.open("E:/Carrosaño.txt");
 		while(Aux!=NULL)
   		{	if(Aux->Oban()==x)
 	  	An<<Aux->Obma()<<"\t"<<Aux->Obmo()<<"\t"<<Aux->Oban()<<"\t"<<Aux->Obca()<<"\t"<<Aux->Obci()<<"\t"<<Aux->Obtr()<<"\t"<<Aux->Obco()<<endl;
@@ -375,6 +379,8 @@ void Archivo::InicializarLec()
 	}
 	cout<<"Eres un master en el manejo de archivos"<<endl;
 }
+
+//Por que modificas la función de finalizar??
 void Archivo::Finalizar(LSE D)
 {	Nodo *Aux=D.ObtenerNodo(1);
 	ofstream g;
