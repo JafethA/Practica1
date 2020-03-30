@@ -25,13 +25,18 @@ class Nodo
 			sig=NULL;	
 		}
 		Nodo(char *Ma,char *Mo,char *Ca,char *Tr,char *Co,int An,int Ci)
-		{	marca=Ma;
-			modelo=Mo;
-			categoria=Ca;
-			trasmision=Tr;
-			color=Co;
-			anio=An;
-			cilindros=Ci;
+		{	anio=An;
+			cilindros=Ci;	
+			marca=new char[strlen(Ma)+1];
+			strcpy(marca,Ma);
+			modelo=new char[strlen(Mo)+1];
+			strcpy(modelo,Mo);
+			categoria=new char[strlen(Ca)+1];
+			strcpy(categoria,Ca);
+			color=new char[strlen(Co)+1];
+			strcpy(color,Co);
+			trasmision=new char[strlen(Tr)+1];
+			strcpy(trasmision,Tr);
 			sig=NULL;
 		}
 		void Asignasig(Nodo*);
@@ -336,7 +341,7 @@ void LSE::CrearA(int x,int op)
 {	ofstream An,Cilin; 
 	if(op==1)
 	{	Nodo *Aux=Inicio;
-		An.open("E:/Carrosaño.txt");
+		An.open("E:/CarrosaÃ±o.txt");
 		while(Aux!=NULL)
   		{	if(Aux->Oban()==x)
 	  	An<<Aux->Obma()<<"\t"<<Aux->Obmo()<<"\t"<<Aux->Oban()<<"\t"<<Aux->Obca()<<"\t"<<Aux->Obci()<<"\t"<<Aux->Obtr()<<"\t"<<Aux->Obco()<<endl;
@@ -364,7 +369,8 @@ class Archivo
 		void InicializarEsc();
 		void LeerA(LSE&);
 		void EscribirA(int);
-		void Finalizar(LSE);
+		void Guardar(LSE);
+		void Finalizar();
 };
 void Archivo::InicializarLec()
 {	A.open("E:/carros.txt", ios::in);
@@ -375,7 +381,7 @@ void Archivo::InicializarLec()
 	}
 	cout<<"Eres un master en el manejo de archivos"<<endl;
 }
-void Archivo::Finalizar(LSE D)
+void Archivo::Guardar(LSE D)
 {	Nodo *Aux=D.ObtenerNodo(1);
 	ofstream g;
 	g.open("E:/carros.txt");
@@ -390,8 +396,11 @@ void Archivo::Finalizar(LSE D)
 	  		Aux=Aux->Obtienesig();
 		}
 	}
-	cout<<"Datos guardados correctamente adios"<<endl;
-	g.close();	
+	cout<<"Datos guardados correctamente"<<endl;
+	g.close();
+}
+void Archivo::Finalizar()
+{	A.close();	
 }
 void Archivo::LeerA(LSE &T)
 {	int i,nL,ani=0,cili=0;
@@ -406,25 +415,16 @@ void Archivo::LeerA(LSE &T)
 		A.getline(Cil,20,'\t');
 		A.getline(Tras,20,'\t');
 		A.getline(Co,20);
-		while(*(M+i)!=NULL)		i++;
-		nL=i;		Ma=new char[nL+1];
-		for(i=0;i<nL+1;i++)		Ma[i]=M[i];
-		i=0;
-		while(*(Mod+i)!=NULL)		i++;
-		nL=i;		Mode=new char[nL+1];
-		for(i=0;i<nL+1;i++)		Mode[i]=Mod[i];
-		i=0;
-		while(*(Cat+i)!=NULL)		i++;
-		nL=i;		Cate=new char[nL+1];
-		for(i=0;i<nL+1;i++)		Cate[i]=Cat[i];
-		i=0;
-		while(*(Co+i)!=NULL)		i++;
-		nL=i;		Col=new char[nL+1];
-		for(i=0;i<nL+1;i++)		Col[i]=Co[i];
-		i=0;
-		while(*(Tras+i)!=NULL)		i++;
-		nL=i;		Trasm=new char[nL+1];
-		for(i=0;i<nL+1;i++)		Trasm[i]=Tras[i];
+		Ma=new char[strlen(M)+1];
+		strcpy(Ma,M);
+		Mode=new char[strlen(Mod)+1];
+		strcpy(Mode,Mod);
+		Cate=new char[strlen(Cat)+1];
+		strcpy(Cate,Cat);
+		Col=new char[strlen(Co)+1];
+		strcpy(Col,Co);
+		Trasm=new char[strlen(Tras)+1];
+		strcpy(Trasm,Tras);
 		ani=atoi(An); cili=atoi(Cil);
 		T.InsertarF(Ma,Mode,Cate,Trasm,Col,ani,cili);
 	} A.close();
@@ -441,7 +441,7 @@ main()
 		"\tMenu\nOpcion 1=Cargar archivos\nOpcion 2=Imprimir\nOpcion 3=Insertar al Inicio"<<
 		"\nOpcion 4=Insertar al final\nOpcion 5=Borrar Inicio\nOpcion 6=Borrar final"<<
 		"\nOpcion 7=Contar datos\nOpcion 8=Borrar dato especifico\nOpcion 9=Editar Datos"<<
-		"\nOpcion 10=Crear archivos con datos\nOpcion 11=Salir\nSeleccionaste: ";	 cin>>opc;
+		"\nOpcion 10=Crear archivos con datos\nOpcion 11=Guardar Cambios\nOpcion 12=Salir\nSeleccionaste: ";	 cin>>opc;
 		switch(opc)
 		{	case 1: if(con==0){	A.InicializarLec(); 
 								A.LeerA(Dan);	con++;} 
@@ -464,10 +464,11 @@ main()
 								Dan.CrearA(m);	break;
 						default: cout<<"Opcion Invalida Verifica"<<endl; 
 					}	break;
-			case 11: cout<<"Saliste del programa"<<endl; break;
+			case 11: A.Guardar(Dan); break;
+			case 12: cout<<"Saliste del programa"<<endl; break;
 			default: cout<<"Opcion invalida verifica las opciones"<<endl; break;
 		}
 		system("pause"); system("cls");
-	}while(opc!=11);
-	A.Finalizar(Dan);
+	}while(opc!=12);
+	A.Finalizar();
 }
