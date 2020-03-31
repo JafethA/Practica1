@@ -81,7 +81,9 @@ class LSE
 		Nodo *Inicio;
 	public:
 		void InsertarI(char*,char*,char*,char*,char*,int,int);
+                void InsertarI(); 
 		void InsertarF(char*,char*,char*,char*,char*,int,int);
+                void InsertarF();
 		void Imprimir();
 		void Agregar(Nodo*);
 		Nodo *ObtenerNodo(int);
@@ -431,7 +433,8 @@ void Archivo::LeerA(LSE &T)
 }
 main()
 {	LSE Dan;
-	Nodo aux;
+        //aqui no hay que declarar Nodos
+	
 	Archivo A;
 	char m[11];
 	int opc,con=0,x,op;
@@ -447,8 +450,9 @@ main()
 								A.LeerA(Dan);	con++;} 
 					else cout<<"Esta opcion solo se puede ocupar una vez"<<endl;	break;
 			case 2: Dan.Imprimir(); break;
-			case 3: aux.Leer(); Dan.InsertarI(aux.Obma(),aux.Obmo(),aux.Obca(),aux.Obtr(),aux.Obco(),aux.Oban(),aux.Obci());	break;
-			case 4: aux.Leer(); Dan.InsertarF(aux.Obma(),aux.Obmo(),aux.Obca(),aux.Obtr(),aux.Obco(),aux.Oban(),aux.Obci());	break; 
+			case 3: Dan.InsertarI();//PIDE LOS DATOS EN LA FUNCION INSERTARI//
+		 break;
+			case 4: Dan.InsertarF();	break; 
 			case 5: Dan.BorrarI(); break;
 			case 6: Dan.BorrarF(); break;
 			case 7: cout<<"Datos de lista: "<<Dan.Contar()<<endl; break;
